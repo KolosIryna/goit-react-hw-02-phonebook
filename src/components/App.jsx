@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import { nanoid } from 'nanoid';
+
+import { PhoneName } from './PhoneName/PhoneName';
 
 export class App extends Component {
   state = {
@@ -6,11 +9,40 @@ export class App extends Component {
     name: '',
   };
 
+  handleInputChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  handleAdd = newContact => {
+    console.log(newContact);
+    // this.setState(prevState => {
+    //   return {
+    //     contacts: [...newContact]
+    //   }
+    // });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const newContact = { name: this.state.name, id: nanoid() };
+
+    this.handleAdd(newContact);
+
+    this.setState({
+      name: '',
+    });
+  };
+
   render() {
     return (
-      <div>
-        <input type="text" name="name" required />
-      </div>
+      <PhoneName
+        name={this.state.name}
+        onChange={this.handleInputChange}
+        onSubmit={this.handleSubmit}
+      />
     );
   }
 }
