@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 
-import { PhoneName } from './PhoneName/PhoneName';
+import { PhoneForm } from './PhoneForm/PhoneForm';
 import { Contacts } from './Contacts/Contacts';
+import { Filter } from './Filter/Filter';
 
 import css from './App.module.css';
 export class App extends Component {
@@ -39,23 +40,67 @@ export class App extends Component {
       number: this.state.number,
     };
 
-    this.setState(prevState => ({
-      name: '',
-      number: '',
-      contacts: [...prevState.contacts, newContact],
-    }));
+    const { name } = newContact;
+    const isNameExist = this.state.contacts.some(
+      contact => contact.name === name
+    );
+
+    if (isNameExist) {
+      alert(`${name} is already in contacts.`);
+      this.setState({
+        name: '',
+        number: '',
+      });
+    } else {
+      this.setState(prevState => ({
+        name: '',
+        number: '',
+        contacts: [...prevState.contacts, newContact],
+      }));
+    }
+  };
+
+  handleFilterChange = event => {
+    this.setState({
+      filter: event.target.value,
+    });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
+  hendleDeleteContact = contactId => {
+    this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(
+          contact => contact.id !== contactId
+        ),
+      };
+    });
   };
 
   render() {
+    const { name, number, filter } = this.state;
+    const contactsToShow = this.getFilteredContacts();
+
     return (
       <div className={css.container}>
-        <PhoneName
-          name={this.state.name}
-          number={this.state.number}
+        <PhoneForm
+          name={name}
+          number={number}
           onChange={this.handleInputChange}
           onSubmit={this.handleSubmit}
         />
-        <Contacts contacts={this.state.contacts} />
+        <h2>Contacts</h2>
+        <Filter filter={filter} handleFilterChange={this.handleFilterChange} />
+        <Contacts
+          contacts={contactsToShow}
+          hendleDeleteContact={this.hendleDeleteContact}
+        />
       </div>
     );
   }

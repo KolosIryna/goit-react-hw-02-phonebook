@@ -1,6 +1,6 @@
-import css from './PhoneName.module.css';
+import css from './PhoneForm.module.css';
 
-export const PhoneName = ({ name, number, onSubmit, onChange }) => {
+export const PhoneForm = ({ name, number, onSubmit, onChange }) => {
   return (
     <div>
       <h1>Phonebook</h1>
@@ -25,7 +25,7 @@ export const PhoneName = ({ name, number, onSubmit, onChange }) => {
             name="number"
             required
             placeholder="Number"
-            minLength="12"
+            minLength="7"
             maxLength="12"
           />
         </label>
