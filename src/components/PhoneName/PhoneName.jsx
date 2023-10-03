@@ -1,11 +1,14 @@
-export const PhoneName = ({ name, onSubmit, onChange }) => {
+import css from './PhoneName.module.css';
+
+export const PhoneName = ({ name, number, onSubmit, onChange }) => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className={css.form}>
         <label>
-          <span>Name</span>
+          <span className={css.title}>Name</span>
           <input
+            className={css.input}
             onChange={onChange}
             value={name}
             name="name"
@@ -13,10 +16,23 @@ export const PhoneName = ({ name, onSubmit, onChange }) => {
             required
             placeholder="Enter name"
           />
+          <span className={css.title}>Number</span>
+          <input
+            className={css.input}
+            onChange={onChange}
+            value={number}
+            type="tel"
+            name="number"
+            required
+            placeholder="Number"
+            minLength="12"
+            maxLength="12"
+          />
         </label>
-        <button type="submit">Add contact</button>
+        <button className={css.btn} type="submit">
+          Add contact
+        </button>
       </form>
-      <h2>Contacts</h2>
     </div>
   );
 };
